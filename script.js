@@ -1,22 +1,27 @@
-const boxesPerRow = 100;
-const boxesPerColumn = 100;
+let fieldDimension = Number(prompt("enter the size of the board:"));
+fieldDimension = Math.min(...[fieldDimension, 50]);
 
-const gameFieldWidth = parseFloat(getComputedStyle(document.body).width);
-const boxWidth = gameFieldWidth / boxesPerRow;
+const gameField = document.querySelector(".gameField");
+const margin = 1;
+const boxSize = (parseFloat(window.getComputedStyle(gameField).height) - margin * (fieldDimension * 2)) / fieldDimension;
 
-const gameFieldHeight= parseFloat(getComputedStyle(document.body).height);
-const boxHeight = gameFieldHeight / boxesPerColumn;
+for (let i = 0; i < fieldDimension ** 2; ++i) {
+    const box = document.createElement("div");
+    
+    box.className = "tile";
+    box.style.width = boxSize + "px";
+    box.style.height = boxSize + "px";
+    box.style.margin = margin + "px";
+    box.addEventListener("mouseenter", () => {box.classList.add("visited-tile")});
 
-for (let i = 0; i < boxesPerRow * boxesPerColumn; i++) {
-    const newBox = document.createElement("div");
-    newBox.style.boxSizing = "border-box";
-    newBox.style.backgroundColor = "grey";
-    newBox.style.padding = "10px";
-
-    newBox.style.width = String(boxWidth) + "px";
-    newBox.style.height = String(boxHeight) + "px";
-    newBox.addEventListener("mouseenter", () => {newBox.style.backgroundColor = "yellow"});
-
-    document.body.appendChild(newBox);
+    gameField.appendChild(box);
 }
+
+let btn = document.createElement("button");
+btn.textContent = "remove it all";
+btn.style.fontSize = "20px";
+btn.addEventListener("click", () => {   gameField.parentNode.removeChild(gameField);
+                                        btn.parentNode.removeChild(btn);
+                                    });
+document.body.appendChild(btn);
 
