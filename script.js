@@ -1,17 +1,18 @@
-let fieldDimension = Number(prompt("enter the size of the board:"));
+let fieldDimension = parseInt(prompt("enter the size of the board:"));
+fieldDimension = fieldDimension > 0 ? fieldDimension : 10;
 fieldDimension = Math.min(...[fieldDimension, 50]);
+console.log(fieldDimension);
 
 const gameField = document.querySelector(".gameField");
-const margin = 1;
-const boxSize = (parseFloat(window.getComputedStyle(gameField).height) - margin * (fieldDimension * 2)) / fieldDimension;
+gameField.style.display = "grid";
+gameField.style.gridTemplateColumns = `repeat(${fieldDimension}, 1fr)`;
+gameField.style.gridTemplateRows = `repeat(${fieldDimension}, 1fr)`;
+gameField.style.gap = "1px";
 
 for (let i = 0; i < fieldDimension ** 2; ++i) {
     const box = document.createElement("div");
     
     box.className = "tile";
-    box.style.width = boxSize + "px";
-    box.style.height = boxSize + "px";
-    box.style.margin = margin + "px";
     box.addEventListener("mouseenter", () => {box.classList.add("visited-tile")});
 
     gameField.appendChild(box);
@@ -23,5 +24,3 @@ btn.style.fontSize = "20px";
 btn.addEventListener("click", () => {   gameField.parentNode.removeChild(gameField);
                                         btn.parentNode.removeChild(btn);
                                     });
-document.body.appendChild(btn);
-

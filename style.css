@@ -13,10 +13,9 @@ body {
 }
 
 .gameField {
-    display: flex;
-    flex-flow: row wrap;
+    display: grid;
 
-    height: 90vh;
+    height: 800px;
     aspect-ratio: 1 / 1;
 }
 
