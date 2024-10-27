@@ -10,13 +10,21 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    gap: 1rem;
 }
 
 .gameField {
     display: grid;
-
-    height: 800px;
     aspect-ratio: 1 / 1;
+    width: 90vw;
+    height: auto;
+}
+
+@media (min-aspect-ratio: 1 / 1) {
+    .gameField {
+        height: 90vh;
+        width: auto;
+    }
 }
 
 .tile {
