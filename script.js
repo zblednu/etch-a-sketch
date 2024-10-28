@@ -41,7 +41,8 @@ for (let i = 0; i < fieldDimension ** 2; ++i) {
 let resetButton = document.createElement("button");
 resetButton.textContent = "clean";
 resetButton.style.fontSize = "20px";
-resetButton.onmousedown = () => {   
+resetButton.onmousedown = (event) => {   
+    event.stopPropagation();
     const tiles = document.querySelectorAll(".visited-tile");
     for (const tile of tiles) {
         tile.className = "tile";
