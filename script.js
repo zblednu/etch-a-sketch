@@ -10,18 +10,18 @@ gameField.style.gridTemplateRows = `repeat(${fieldDimension}, 1fr)`;
 gameField.style.gap = "0px";
 
 
-let isLeftButtonPressed = false;
-document.addEventListener("mouseup", () => {
-    isLeftButtonPressed = false;
-});
-document.addEventListener("touchend", () => {
-    isLeftButtonPressed = false;
-});
+const drawModeStatus = document.querySelector("#drawModeStatus");
+
+let drawMode = false;
 document.addEventListener("mousedown", () => {
-        isLeftButtonPressed = true;
-});
-document.addEventListener("touchstart", () => {
-        isLeftButtonPressed = true;
+        drawMode = !drawMode;
+        drawModeStatus.textContent = `drawing is ${drawMode}`;
+        if (drawMode) {
+            drawModeStatus.style.backgroundColor = "green";
+        }
+        else {
+            drawModeStatus.style.backgroundColor = "red";
+        }
 });
 
 for (let i = 0; i < fieldDimension ** 2; ++i) {
@@ -30,12 +30,7 @@ for (let i = 0; i < fieldDimension ** 2; ++i) {
     box.className = "tile";
 
     box.addEventListener("mousemove", () => {
-        if (isLeftButtonPressed) {
-                box.classList.add("visited-tile");
-        }
-    });
-    box.addEventListener("touchmove", () => {
-        if (isLeftButtonPressed) {
+        if (drawMode) {
                 box.classList.add("visited-tile");
         }
     });
@@ -43,16 +38,16 @@ for (let i = 0; i < fieldDimension ** 2; ++i) {
     gameField.appendChild(box);
 }
 
-let btn = document.createElement("button");
-btn.textContent = "clean";
-btn.style.fontSize = "20px";
-btn.onmousedown = () => {   
+let resetButton = document.createElement("button");
+resetButton.textContent = "clean";
+resetButton.style.fontSize = "20px";
+resetButton.onmousedown = () => {   
     const tiles = document.querySelectorAll(".visited-tile");
     for (const tile of tiles) {
         tile.className = "tile";
     }
 };
-document.body.appendChild(btn);
+document.body.appendChild(resetButton);
 
 document.body.addEventListener("mousedown", (event) => {
     event.preventDefault();
