@@ -1,0 +1,6 @@
+save states between each drawing, on Ctrl+Z revert to the previous state (if you've made unwanted changes to your drawing)
+add an option to save the drawing as png 
+
+make it work for phones
+
+

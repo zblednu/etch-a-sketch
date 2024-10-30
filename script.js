@@ -13,14 +13,40 @@ gameField.style.gap = "0px";
 const drawModeStatus = document.querySelector("#drawModeStatus");
 
 let drawMode = false;
-document.addEventListener("mousedown", () => {
-        drawMode = !drawMode;
+function enableDrawMode() {
+        drawMode = true;
         drawModeStatus.textContent = `drawing is ${drawMode}`;
+        drawModeStatus.style.backgroundColor = "green";
+}
+
+function disableDrawMode() {
+        drawMode = false;
+        drawModeStatus.textContent = `drawing is ${"disabled"}`;
+        drawModeStatus.style.backgroundColor = "red";
+}
+
+function toggleDrawMode() {
+    if (drawMode) {
+        disableDrawMode();
+    }
+    else {
+        enableDrawMode();
+    }
+}
+
+
+document.addEventListener("mousedown", toggleDrawMode);
+document.addEventListener("touchstart", enableDrawMode);
+document.addEventListener("touchend", disableDrawMode);
+
+document.addEventListener("touchmove", (e) => {
         if (drawMode) {
-            drawModeStatus.style.backgroundColor = "green";
-        }
-        else {
-            drawModeStatus.style.backgroundColor = "red";
+            e.preventDefault();  // Prevent scrolling
+            const touch = e.touches[0];
+            const targetTile = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (targetTile && targetTile.classList.contains("tile")) {
+                targetTile.classList.add("visited-tile");
+            }
         }
 });
 
@@ -29,11 +55,12 @@ for (let i = 0; i < fieldDimension ** 2; ++i) {
     
     box.className = "tile";
 
-    box.addEventListener("mousemove", () => {
+    box.addEventListener("mouseover", () => {
         if (drawMode) {
                 box.classList.add("visited-tile");
         }
     });
+
 
     gameField.appendChild(box);
 }
