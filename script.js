@@ -11,6 +11,7 @@ gameField.style.gap = "0px";
 
 
 const drawModeStatus = document.querySelector("#drawModeStatus");
+drawModeStatus.style.width = "150px";
 
 let drawMode = false;
 function enableDrawMode() {
@@ -68,6 +69,7 @@ for (let i = 0; i < fieldDimension ** 2; ++i) {
 let resetButton = document.createElement("button");
 resetButton.textContent = "clean";
 resetButton.style.fontSize = "20px";
+resetButton.style.width = "60px";
 resetButton.onmousedown = (event) => {   
     event.stopPropagation();
     const tiles = document.querySelectorAll(".visited-tile");
