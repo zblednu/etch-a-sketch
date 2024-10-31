@@ -59,10 +59,7 @@ document.addEventListener("touchstart", (event) => {
 });
 
 function saveCurrentState() {
-    const currentState = [];
-    for (const tile of document.querySelectorAll(".tile")) {
-        currentState.push(tile.classList.contains("visited") ? true : false);
-    }
+    const currentState = Array.from(document.querySelectorAll(".tile")).map((tile) => tile.classList.contains("visited") ? true : false);
     history.push(currentState);
 }
 
@@ -71,7 +68,7 @@ stepBackBtn.addEventListener("click", loadFromHistory);
 
 function loadFromHistory() {
     const previousState = history.pop();
-    if (previousState === undefined) {
+    if (!previousState) {
         resetBoard();
         return;
     }
