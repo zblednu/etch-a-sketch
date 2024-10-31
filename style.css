@@ -43,6 +43,7 @@ body > div:not(.game-field) > * {
 .game-field {
     aspect-ratio: 1 / 1;
     display: grid;
+    gap: 0;
 }
 
 button {
