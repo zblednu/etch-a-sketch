@@ -1,85 +1,87 @@
-let fieldDimension = parseInt(prompt("enter the size of the board:"));
-fieldDimension = fieldDimension > 0 ? fieldDimension : 10;
-fieldDimension = Math.min(...[fieldDimension, 60]);
-console.log(fieldDimension);
+"use strict"
+const gameField = document.querySelector(".game-field");
 
-const gameField = document.querySelector(".gameField");
-gameField.style.display = "grid";
-gameField.style.gridTemplateColumns = `repeat(${fieldDimension}, 1fr)`;
-gameField.style.gridTemplateRows = `repeat(${fieldDimension}, 1fr)`;
-gameField.style.gap = "0px";
+/* BOARD INIT */
+const lowResDim = 20;
+const highResDim = 35;
+document.querySelector(".low-res-btn").addEventListener("click", (event) => {
+        event.stopPropagation();
+        initBoard(lowResDim);
+});
 
+document.querySelector(".high-res-btn").addEventListener("click", (event) => {
+        event.stopPropagation();
+        initBoard(highResDim);
+});
 
-const drawModeStatus = document.querySelector("#drawModeStatus");
-drawModeStatus.style.width = "150px";
+function initBoard(dim) {
+        gameField.innerHTML = "";
+        gameField.style.gridTemplateColumns = `repeat(${dim}, 1fr)`;
+        gameField.style.gridTemplateRows = `repeat(${dim}, 1fr)`;
 
-let drawMode = false;
-function enableDrawMode() {
-        drawMode = true;
-        drawModeStatus.textContent = `drawing is ${drawMode}`;
-        drawModeStatus.style.backgroundColor = "green";
+        for (let i = 0; i < dim ** 2; ++i) {
+            const tile = document.createElement("div");
+            tile.className = "tile";
+            gameField.appendChild(tile);
+        }
 }
 
-function disableDrawMode() {
-        drawMode = false;
-        drawModeStatus.textContent = `drawing is ${"disabled"}`;
-        drawModeStatus.style.backgroundColor = "red";
-}
+initBoard(lowResDim);
 
-function toggleDrawMode() {
-    if (drawMode) {
-        disableDrawMode();
-    }
-    else {
-        enableDrawMode();
-    }
-}
-
-
-document.addEventListener("mousedown", toggleDrawMode);
-document.addEventListener("touchstart", enableDrawMode);
-document.addEventListener("touchend", disableDrawMode);
-
-document.addEventListener("touchmove", (e) => {
-        if (drawMode) {
-            e.preventDefault();  // Prevent scrolling
-            const touch = e.touches[0];
-            const targetTile = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (targetTile && targetTile.classList.contains("tile")) {
-                targetTile.classList.add("visited-tile");
-            }
+/* DRAWING LOGIC */
+document.addEventListener("touchmove", (event) => {
+        event.preventDefault();  // Prevent scrolling
+        const touch = event.touches[0];
+        const targetTile = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (targetTile && targetTile.classList.contains("tile")) {
+                targetTile.classList.add("visited");
         }
 });
 
-for (let i = 0; i < fieldDimension ** 2; ++i) {
-    const box = document.createElement("div");
-    
-    box.className = "tile";
+document.querySelector(".reset").addEventListener("click", (e) => resetBoard(e));
 
-    box.addEventListener("mouseover", () => {
-        if (drawMode) {
-                box.classList.add("visited-tile");
-        }
-    });
-
-
-    gameField.appendChild(box);
-}
-
-let resetButton = document.createElement("button");
-resetButton.textContent = "clean";
-resetButton.style.fontSize = "20px";
-resetButton.style.width = "60px";
-resetButton.onmousedown = (event) => {   
-    event.stopPropagation();
-    const tiles = document.querySelectorAll(".visited-tile");
+function resetBoard(e) {
+    if (e !== undefined) {
+        e.stopPropagation();
+    }
+    const tiles = document.querySelectorAll(".visited");
     for (const tile of tiles) {
         tile.className = "tile";
     }
-};
-document.body.appendChild(resetButton);
+}
 
-document.body.addEventListener("mousedown", (event) => {
-    event.preventDefault();
+/* HISTORY */
+const history = [];
+
+document.addEventListener("touchstart", (event) => {
+    event.stopPropagation();
+    saveCurrentState();
 });
 
+function saveCurrentState() {
+    const currentState = [];
+    for (const tile of document.querySelectorAll(".tile")) {
+        currentState.push(tile.classList.contains("visited") ? true : false);
+    }
+    history.push(currentState);
+}
+
+const stepBackBtn = document.querySelector(".go-back");
+stepBackBtn.addEventListener("click", loadFromHistory);
+
+function loadFromHistory() {
+    const previousState = history.pop();
+    if (previousState === undefined) {
+        resetBoard();
+        return;
+    }
+
+    let counter = 0;
+    for (const tile of document.querySelectorAll(".tile")) {
+            tile.className = `tile ${previousState[counter++] == true ? "visited": ""}`;
+    }
+}
+
+for (const btn of document.querySelectorAll("button")) {
+    btn.addEventListener("touchstart", (event) => {event.stopPropagation()});
+}
