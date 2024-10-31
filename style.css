@@ -9,6 +9,8 @@
     border: none;
     margin: none;
     padding: none;
+
+    touch-action: manipulation;
 }
 
 html {
