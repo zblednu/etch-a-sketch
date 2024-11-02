@@ -1,5 +1,6 @@
 :root {
-    --violet:  #7542e4;
+    --button:  #7542e4;
+    --button-pressed: #4217A1;
     --orange:  darkorange;
     --pale:  #fff4de;
 }
@@ -48,10 +49,14 @@ body > div:not(.game-field) > * {
 }
 
 button {
-    background-color: var(--violet);
+    background-color: var(--button);
     border-radius: 3.5rem;
     border: 0.4rem solid black;
     padding: 1rem;
+}
+
+button:active {
+    background-color: var(--button-pressed);
 }
 
 .tile {
