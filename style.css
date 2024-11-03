@@ -6,13 +6,11 @@
 }
 
 * {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: bold;
     border: none;
     margin: none;
     padding: none;
-
-    touch-action: manipulation;
 }
 
 html {
@@ -29,7 +27,7 @@ body {
     width: 95vw;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 body > div:not(.game-field) {
